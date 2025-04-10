@@ -3,3 +3,9 @@ pillow
 numpy
 scikit-learn
 matplotlib
+pandas
+torch
+opencv-python-headless
+scikit-learn
+matplotlib
+transformers
