@@ -25,6 +25,8 @@ class AppConstants:
     PROBABILITY_COLORMAP = "plasma"
     PLOT_DPI = 300
 
+    LOGO_LOCATION = "logo/logo_sample-removebg-preview.png"
+
     @staticmethod
     def get_segmentation_path() -> str:
         """Get segmentation path with environment variable fallback"""

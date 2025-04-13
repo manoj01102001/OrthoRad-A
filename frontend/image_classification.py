@@ -61,55 +61,59 @@ def show_classification_results(prediction, probabilities):
 
 def classification_page():
     """Main classification analysis page"""
-    st.title("CVMI Classification Analysis")
-    
-    if 'uploaded_image' not in st.session_state or not st.session_state.uploaded_image:
-        st.warning("Please upload an image first!")
-        st.session_state.page = "upload"
-        st.rerun()
-        return
-    
-    model = load_classification_model()
-    if model is None:
-        return
-    
-    col1, col2 = st.columns([0.6 , 0.4])
-    
-    with col1:
-        st.image(
-            st.session_state.uploaded_image,
-            caption="Uploaded Image",
-            use_container_width=True
-        )
-    
+
+    _, col2,_ = st.columns([0.2, 0.6,0.26])
+
     with col2:
-        with st.spinner("Analyzing image..."):
-            try:
-                processed_img = preprocess_classification_image(st.session_state.uploaded_image)
-                if processed_img is not None:
-                    prediction = model.predict(processed_img)
-                    probabilities = model.predict_proba(processed_img)[0]
-                    show_classification_results(prediction, probabilities)
-            except Exception as e:
-                st.error(f"Classification failed: {str(e)}")
-    
-    st.markdown("---")
-    col1, col2, col3= st.columns(3)
-    with col1:
-        if st.button("🏠 Return to Home"):
-            st.session_state.page = "home"
-            st.session_state.analysis_type = None
-            st.rerun()
-    with col2:
-        if st.button("📤 Upload New Image"):
-            st.session_state.uploaded_image = None
+        st.markdown("<h1 style='text-align: center;'> CVMI Classification </h1>", unsafe_allow_html=True)
+        
+        if 'uploaded_image' not in st.session_state or not st.session_state.uploaded_image:
+            st.warning("Please upload an image first!")
             st.session_state.page = "upload"
             st.rerun()
+            return
+        
+        model = load_classification_model()
+        if model is None:
+            return
+        
+        col1, col2 = st.columns([0.6 , 0.4])
+        
+        with col1:
+            st.image(
+                st.session_state.uploaded_image,
+                caption="Uploaded Image",
+                use_container_width=True
+            )
+        
+        with col2:
+            with st.spinner("Analyzing image..."):
+                try:
+                    processed_img = preprocess_classification_image(st.session_state.uploaded_image)
+                    if processed_img is not None:
+                        prediction = model.predict(processed_img)
+                        probabilities = model.predict_proba(processed_img)[0]
+                        show_classification_results(prediction, probabilities)
+                except Exception as e:
+                    st.error(f"Classification failed: {str(e)}")
+        
+        st.markdown("---")
+        col1, col2, col3= st.columns(3)
+        with col1:
+            if st.button("🏠 Return to Home"):
+                st.session_state.page = "home"
+                st.session_state.analysis_type = None
+                st.rerun()
+        with col2:
+            if st.button("📤 Upload New Image"):
+                st.session_state.uploaded_image = None
+                st.session_state.page = "upload"
+                st.rerun()
 
-    with col3:
-        if st.button("Try Segmentation for Image"):
-            st.session_state.page = "segmentation"
-            st.session_state.analysis_type = "segmentation"
-            st.rerun()
+        with col3:
+            if st.button("Try Segmentation for Image"):
+                st.session_state.page = "segmentation"
+                st.session_state.analysis_type = "segmentation"
+                st.rerun()
 
 

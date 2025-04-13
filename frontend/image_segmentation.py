@@ -53,87 +53,94 @@ def segment_image(image, model, processor, threshold):
 
 def segmentation_page():
     """Main segmentation analysis page"""
-    st.title("Medical Image Segmentation")
-    
-    if 'uploaded_image' not in st.session_state or not st.session_state.uploaded_image:
-        st.warning("Please upload an image first!")
-        st.session_state.page = "upload"
-        st.rerun()
-        return
-    
-    model, processor = load_segmentation_model()
-    if model is None:
-        return
-    
-    threshold = st.slider(
-        "Confidence Threshold",
-        0.0, 1.0,
-        value=AppConstants.SEGMENTATION_THRESHOLD,
-        step=0.01,
-        help="Adjust the minimum confidence level for segmentation"
-    )
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.image(
-            st.session_state.uploaded_image,
-            caption="Original Image",
-            use_container_width=True
-        )
-    
-    try:
-        mask, prob_map = segment_image(
-            st.session_state.uploaded_image,
-            model,
-            processor,
-            threshold
-        )
-        
-        if mask is not None and prob_map is not None:
-            with col2:
-                fig, ax = plt.subplots()
-                ax.imshow(mask, cmap=AppConstants.SEGMENTATION_COLORMAP)
-                ax.axis('off')
-                st.pyplot(fig)
-                st.caption("Segmentation Mask")
-            
-            with col3:
-                fig, ax = plt.subplots()
-                im = ax.imshow(prob_map, cmap=AppConstants.PROBABILITY_COLORMAP)
-                plt.colorbar(im, ax=ax)
-                ax.axis('off')
-                st.pyplot(fig)
-                st.caption("Probability Map")
-            
-            st.markdown("---")
-            st.subheader("Quantitative Analysis")
-            
-            col1, col2, col3 = st.columns(3)
-            max_prob = np.max(prob_map)
-            avg_prob = np.mean(prob_map[mask > 0]) if np.any(mask) else 0
-            
-            col2.metric("Maximum Confidence", f"{max_prob:.2f}")
-            col3.metric("Average Confidence", f"{avg_prob:.2f}")
-    
-    except Exception as e:
-        st.error(f"Error during segmentation: {str(e)}")
-    
-    st.markdown("---")
-    col1, col2, col3= st.columns(3)
-    with col1:
-        if st.button("🏠 Return to Home"):
-            st.session_state.page = "home"
-            st.session_state.analysis_type = None
-            st.rerun()
+
+    _, col2,_ = st.columns([0.25, 0.5,0.25])
+
     with col2:
-        if st.button("📤 Upload New Image"):
-            st.session_state.uploaded_image = None
+
+        st.markdown("<h1 style='text-align: center;'> C2 C3 C4 Segmentation </h1>", unsafe_allow_html=True)
+        
+        if 'uploaded_image' not in st.session_state or not st.session_state.uploaded_image:
+            st.warning("Please upload an image first!")
             st.session_state.page = "upload"
             st.rerun()
+            return
+        
+        model, processor = load_segmentation_model()
+        if model is None:
+            return
+        _, col2,_ = st.columns([0.2, 0.6,0.2])
 
-    with col3:
-        if st.button("Try CVMI classification for Image"):
-            st.session_state.page = "classification"
-            st.session_state.analysis_type = "classification"
-            st.rerun()
+        with col2:
+            threshold = st.slider(
+                "Confidence Threshold",
+                0.0, 1.0,
+                value=AppConstants.SEGMENTATION_THRESHOLD,
+                step=0.01,
+                help="Adjust the minimum confidence level for segmentation"
+            )
+        
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.image(
+                st.session_state.uploaded_image,
+                caption="Original Image",
+                use_container_width=True
+            )
+        
+        try:
+            mask, prob_map = segment_image(
+                st.session_state.uploaded_image,
+                model,
+                processor,
+                threshold
+            )
+            
+            if mask is not None and prob_map is not None:
+                with col2:
+                    fig, ax = plt.subplots()
+                    ax.imshow(mask, cmap=AppConstants.SEGMENTATION_COLORMAP)
+                    ax.axis('off')
+                    st.pyplot(fig)
+                    st.caption("Segmentation Mask")
+                
+                with col3:
+                    fig, ax = plt.subplots()
+                    im = ax.imshow(prob_map, cmap=AppConstants.PROBABILITY_COLORMAP)
+                    plt.colorbar(im, ax=ax)
+                    ax.axis('off')
+                    st.pyplot(fig)
+                    st.caption("Probability Map")
+                
+                st.markdown("---")
+                st.subheader("Quantitative Analysis")
+                
+                col1, col2, col3 = st.columns(3)
+                max_prob = np.max(prob_map)
+                avg_prob = np.mean(prob_map[mask > 0]) if np.any(mask) else 0
+                
+                col2.metric("Maximum Confidence", f"{max_prob:.2f}")
+                col3.metric("Average Confidence", f"{avg_prob:.2f}")
+        
+        except Exception as e:
+            st.error(f"Error during segmentation: {str(e)}")
+        
+        st.markdown("---")
+        col1, col2, col3= st.columns(3)
+        with col1:
+            if st.button("🏠 Return to Home"):
+                st.session_state.page = "home"
+                st.session_state.analysis_type = None
+                st.rerun()
+        with col2:
+            if st.button("📤 Upload New Image"):
+                st.session_state.uploaded_image = None
+                st.session_state.page = "upload"
+                st.rerun()
+
+        with col3:
+            if st.button("Try CVMI classification for Image"):
+                st.session_state.page = "classification"
+                st.session_state.analysis_type = "classification"
+                st.rerun()
