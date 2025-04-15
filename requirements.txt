@@ -8,4 +8,5 @@ torch
 opencv-python-headless
 scikit-learn
 matplotlib
-transformers
+transformers//
+abc
