@@ -25,7 +25,7 @@ class AppConstants:
     PROBABILITY_COLORMAP = "plasma"
     PLOT_DPI = 300
 
-    LOGO_LOCATION = "logo/logo_sample-removebg-preview.png"
+    LOGO_LOCATION = "logo/openai-logo.png"
 
     @staticmethod
     def get_segmentation_path() -> str:
