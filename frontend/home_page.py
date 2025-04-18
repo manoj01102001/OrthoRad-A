@@ -19,6 +19,7 @@ def home_page():
         """,
         unsafe_allow_html=True
     )
+    print("Manoj annan")
 
     _, col2, _ = st.columns([0.25, 0.5, 0.25])
 
