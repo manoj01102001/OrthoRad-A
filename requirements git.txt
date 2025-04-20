@@ -1,1 +1,0 @@
-SQL single row function

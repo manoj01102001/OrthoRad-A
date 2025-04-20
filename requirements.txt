@@ -9,3 +9,4 @@ opencv-python-headless
 scikit-learn
 matplotlib
 transformers
+streamlit_lottie

@@ -1,6 +1,7 @@
 import streamlit as st
 from pathlib import Path
 from Utils.constants import AppConstants
+from Utils.footer import add_footer_with_logo
 
 def home_page():
     """Main landing page with navigation"""
@@ -51,7 +52,7 @@ def home_page():
         
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown("<h4 style='color: #3299A2;'>App Objective</h4>", 
+            st.markdown("<h4 style='color: #3299A2;text-align: center;'>App Objective</h4>", 
                        unsafe_allow_html=True)
             st.markdown("""
                 <div style='color: white; text-align: justify;'>
@@ -60,13 +61,21 @@ def home_page():
                 </div>
                 """, unsafe_allow_html=True)
             
-            # Stages display
-            for stage_number in range(2, 7):
-                st.markdown(
-                    f"<p style='color: #3299A2; text-align: center; margin: 0.5rem 0;'>"
-                    f"Stage {stage_number}</p>",
-                    unsafe_allow_html=True
-                )
+           # First handle pairs (2,3) and (4,5)
+            for stage_number in range(2, 6, 2):  # 2, 4
+                _, col1, _, col2, _ = st.columns(5)
+                with col1:
+                    st.markdown(f"<p style='color: #3299A2; text-align: center;'>Stage {stage_number}</p>",
+                                unsafe_allow_html=True)
+                with col2:
+                    st.markdown(f"<p style='color: #3299A2; text-align: center;'>Stage {stage_number+1}</p>",
+                                unsafe_allow_html=True)
+
+            # Then handle the lone Stage 6
+            _, col1, _, col2, _ = st.columns(5)
+            with col1:
+                st.markdown(f"<p style='color: #3299A2; text-align: center;'>Stage 6</p>",
+                            unsafe_allow_html=True)
 
         with col2:
             st.markdown("<h4 style='color: #3299A2;'>Key Features</h4>", 
@@ -98,3 +107,5 @@ def home_page():
             if st.button("🔐 Login", key="login_btn"):
                 st.session_state.page = "login_in"
                 st.rerun()
+
+    add_footer_with_logo("images/company_logo.jfif")
