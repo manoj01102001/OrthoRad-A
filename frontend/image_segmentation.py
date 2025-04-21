@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from transformers import SegformerForSemanticSegmentation, SegformerFeatureExtractor
 from Utils.constants import AppConstants
+from Utils.footer import add_footer_with_logo
+
 
 @st.cache_resource
 def load_segmentation_model():
@@ -322,3 +324,4 @@ def segmentation_page():
                 st.session_state.page = "classification"
                 st.session_state.analysis_type = "classification"
                 st.rerun()
+    add_footer_with_logo("images/company_logo.jfif")

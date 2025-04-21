@@ -62,21 +62,21 @@ def home_page():
                 </div>
                 """, unsafe_allow_html=True)
             
-           # First handle pairs (2,3) and (4,5)
-            for stage_number in range(2, 6, 2):  # 2, 4
-                _, col1, _, col2, _ = st.columns(5)
-                with col1:
-                    st.markdown(f"<p style='color: #3299A2; text-align: center;'>Stage {stage_number}</p>",
-                                unsafe_allow_html=True)
-                with col2:
-                    st.markdown(f"<p style='color: #3299A2; text-align: center;'>Stage {stage_number+1}</p>",
-                                unsafe_allow_html=True)
+        #    # First handle pairs (2,3) and (4,5)
+        #     for stage_number in range(2, 6, 2):  # 2, 4
+        #         _, col1, _, col2, _ = st.columns(5)
+        #         with col1:
+        #             st.markdown(f"<p style='color: #3299A2; text-align: center;'>Stage {stage_number}</p>",
+        #                         unsafe_allow_html=True)
+        #         with col2:
+        #             st.markdown(f"<p style='color: #3299A2; text-align: center;'>Stage {stage_number+1}</p>",
+        #                         unsafe_allow_html=True)
 
-            # Then handle the lone Stage 6
-            _, col1, _, col2, _ = st.columns(5)
-            with col1:
-                st.markdown(f"<p style='color: #3299A2; text-align: center;'>Stage 6</p>",
-                            unsafe_allow_html=True)
+        #     # Then handle the lone Stage 6
+        #     _, col1, _, col2, _ = st.columns(5)
+        #     with col1:
+        #         st.markdown(f"<p style='color: #3299A2; text-align: center;'>Stage 6</p>",
+        #                     unsafe_allow_html=True)
 
         with col2:
             st.markdown("<h4 style='color: #3299A2;'>Key Features</h4>", 

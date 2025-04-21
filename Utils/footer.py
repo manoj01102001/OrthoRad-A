@@ -25,7 +25,6 @@ def add_footer_with_logo(logo_filename=None):
         return # Don't add footer if logo couldn't be encoded
     logo_base64_string = get_base64_image(logo_filename)
     
-
     footer_html = f"""
     <style>
     .footer {{
@@ -56,7 +55,7 @@ def add_footer_with_logo(logo_filename=None):
     }}
     </style>
     <div class="footer">
-        <img src="data:image/png;base64,{logo_base64_string}" alt="Company Logo" height="30"> <p style="margin: 0;">Developed with ❤️ using Streamlit | &copy; 2023 Your Company</p>
+        <img src="data:image/png;base64,{logo_base64_string}" alt="Company Logo" height="30"> <p style="margin: 0;">Developed for Jairus using Streamlit | &copy; 2025 JS Tech</p>
         <p style="margin: 0 0 0 20px;"><a href="https://yourwebsite.com" target="_blank">Visit Our Website</a> | <a href="mailto:info@yourcompany.com">Contact Us</a></p>
     </div>
     """
