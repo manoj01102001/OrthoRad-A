@@ -2,6 +2,7 @@ import streamlit as st
 import base64
 from pathlib import Path
 import streamlit.components.v1 as components
+from Utils.footer import add_footer_with_logo
 
 def popup_warning(msg: str):
     # injects a tiny <script> that fires off a JS alert()
@@ -150,9 +151,10 @@ def login_in_page():
 
         with col2:
             if st.button("Upload cephalogram Image→"):     
-                if (name=="") or (age==0) or (st.session_state.selected_body_type == None):
+                if (name=="") or (age==0) or (st.session_state.selected_body_type == None): 
                     popup_warning("Please enter all the required fields")
                 else:
                     st.session_state.page = "upload"
                     st.rerun()
+    add_footer_with_logo("images/company_logo.jfif")
         

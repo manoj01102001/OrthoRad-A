@@ -5,7 +5,7 @@ import pickle
 import matplotlib.pyplot as plt
 from PIL import Image
 from Utils.constants import AppConstants
-
+from Utils.footer import add_footer_with_logo
 @st.cache_resource
 def load_classification_model():
     """Load and cache the classification model"""
@@ -294,5 +294,7 @@ def classification_page():
                 st.session_state.page = "segmentation"
                 st.session_state.analysis_type = "segmentation"
                 st.rerun()
+
+    add_footer_with_logo("images/company_logo.jfif")
 
 

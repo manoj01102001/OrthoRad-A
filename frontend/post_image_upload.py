@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 from Utils.constants import AppConstants
+from Utils.footer import add_footer_with_logo
 
 def post_image_upload_page():
     st.markdown(
@@ -123,3 +124,4 @@ def post_image_upload_page():
                 st.session_state.current_file = None
                 st.session_state.analysis_type = None
                 st.rerun()
+    add_footer_with_logo("images/company_logo.jfif")
