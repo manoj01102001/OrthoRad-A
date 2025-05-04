@@ -8,8 +8,13 @@ class AppConstants:
     
     # Model paths
     CLASSIFICATION_MODEL_PATH = "model/classification/cvmi_classification_2025_04_05.pkl"
-    SEGMENTATION_MODEL_PATH = "model/segmentation/nvidia_finetuned_segformer_model_20250410/"
-    
+    SEGMENTATION_MODEL_PATH = "model/segmentation/segformer-new/"
+    CLASSIFICATION_MODEL_PATH2 = "model/efficientnet_classification/efficientnet_model.pth"
+    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+    SEGMENTATION_THRESHOLD = 0.5
+    SEGMENTATION_COLORMAP = "viridis"
+    PROBABILITY_COLORMAP = "hot"
+
     # Hardware configuration
     USE_CUDA = torch.cuda.is_available()
     DEVICE = torch.device("cuda" if USE_CUDA else "cpu")
