@@ -55,8 +55,8 @@ def add_footer_with_logo(logo_filename=None):
     }}
     </style>
     <div class="footer">
-        <img src="data:image/png;base64,{logo_base64_string}" alt="Company Logo" height="30"> <p style="margin: 0;">Developed for Jairus using Streamlit | &copy; 2025 JS Tech</p>
-        <p style="margin: 0 0 0 20px;"><a href="https://yourwebsite.com" target="_blank">Visit Our Website</a> | <a href="mailto:info@yourcompany.com">Contact Us</a></p>
+        <img src="data:image/png;base64,{logo_base64_string}" alt="Company Logo" height="30"> <p style="margin: 0;">Developed for Jairus | &copy; 2025 JS Tech</p>
+        <p style="margin: 0 0 0 20px;"><a href="http://jairus.in/" target="_blank">Visit Our Website</a> | <a href="tel:+91-9176337062">Contact Us</a></p>
     </div>
     """
     st.markdown(footer_html, unsafe_allow_html=True)
