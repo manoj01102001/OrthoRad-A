@@ -5,7 +5,7 @@ from frontend.image_upload import upload_page
 from frontend.login_in_page import login_in_page
 from frontend.post_image_upload import post_image_upload_page
 from frontend.image_classification import classification_page
-from frontend.image_segmentation import segmentation_page
+from frontend.dummy import segmentation_page
 
 def main():
     st.set_page_config(

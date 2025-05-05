@@ -11,3 +11,4 @@ matplotlib
 transformers
 torchvision
 timm
+scikit-image
