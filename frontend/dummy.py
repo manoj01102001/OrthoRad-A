@@ -19,8 +19,7 @@ def mse(imageA, imageB):
 
 def check_image_stage_from_array(input_image_array, model,base_dir="original_images"):
     stage_folders = [f"cvmi{i}" for i in range(2, 7)]
-    input_shape = input_image_array.shape[:2]  # (height, width)
-
+    input_shape = input_image_array.shape[:2]# (height, width)
     for folder in stage_folders:
         folder_path = os.path.join(base_dir, folder)
         if not os.path.exists(folder_path):
@@ -46,6 +45,7 @@ def check_image_stage_from_array(input_image_array, model,base_dir="original_ima
 
 @st.cache_resource
 def load_classification_model():
+    print("Loading classification model...")
     try:
         model = timm.create_model("tf_efficientnet_b0_ns", pretrained=True, num_classes=5)
         model.load_state_dict(
@@ -55,10 +55,11 @@ def load_classification_model():
         model.eval()
         return model
     except Exception as e:
+
         raise e
 
-
 def classify_segmented_mask(mask, model):
+    print("Classifying segmented mask...")
     try:
         preprocess = transforms.Compose([
             transforms.Resize((224, 224)),
@@ -227,9 +228,9 @@ def segmentation_page():
         st.subheader("📁 Image Classification")
 
         try:
-            uploaded_image_np = np.array(st.session_state.uploaded_image.convert("RGB"))
-            model = load_classification_model
-            matched_stage = check_image_stage_from_array(uploaded_image_np, model, base_dir="original_images")
+            input_image_array = np.array(st.session_state.uploaded_image.convert("RGB"))
+            model = load_classification_model()
+            matched_stage = check_image_stage_from_array(input_image_array, model, base_dir="original_images")
 
             if matched_stage == "new data":
                 st.info("❗ This image is not found in existing CVMI folders (cvmi2–cvmi6).")

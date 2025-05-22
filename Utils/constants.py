@@ -10,7 +10,7 @@ class AppConstants:
     CLASSIFICATION_MODEL_PATH = "model/classification/cvmi_classification_2025_04_05.pkl"
     SEGMENTATION_MODEL_PATH = "model/segmentation/segformer-new/"
     CLASSIFICATION_MODEL_PATH2 = "model/efficientnet_classification/efficientnet_model.pth"
-    CLASSIFICATION_MODEL_PATH3 = "model/efficientnet_classification/saved_model_eff.pth"
+    CLASSIFICATION_MODEL_PATH3 = "model/classification/saved_model_eff.pth"
     DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
     SEGMENTATION_THRESHOLD = 0.5
     SEGMENTATION_COLORMAP = "viridis"
