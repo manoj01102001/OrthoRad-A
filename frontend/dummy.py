@@ -4,8 +4,10 @@ import numpy as np
 import streamlit as st
 import matplotlib.pyplot as plt
 from PIL import Image
+from torchvision import models, transforms
 from transformers import SegformerForSemanticSegmentation, SegformerFeatureExtractor
 from Utils.constants import AppConstants
+import timm
 
 
 def mse(imageA, imageB):
@@ -15,7 +17,7 @@ def mse(imageA, imageB):
     return err
 
 
-def check_image_stage_from_array(input_image_array, base_dir="original_images"):
+def check_image_stage_from_array(input_image_array, model,base_dir="original_images"):
     stage_folders = [f"cvmi{i}" for i in range(2, 7)]
     input_shape = input_image_array.shape[:2]  # (height, width)
 
@@ -38,8 +40,59 @@ def check_image_stage_from_array(input_image_array, base_dir="original_images"):
                         return folder  # e.g., "cvmi2"
                 except Exception as e:
                     continue
+    class_name, predicted_prob, probabilities = classify_segmented_mask(input_image_array, model)
+    print(predicted_prob, probabilities)
+    return class_name
 
-    return "CVMI 4"
+@st.cache_resource
+def load_classification_model():
+    try:
+        model = timm.create_model("tf_efficientnet_b0_ns", pretrained=True, num_classes=5)
+        model.load_state_dict(
+            torch.load(AppConstants.CLASSIFICATION_MODEL_PATH3, map_location=AppConstants.DEVICE)
+        )
+        model.to(AppConstants.DEVICE)
+        model.eval()
+        return model
+    except Exception as e:
+        raise e
+
+
+def classify_segmented_mask(mask, model):
+    try:
+        preprocess = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+        ])
+
+        gray_mask_pil = Image.fromarray(mask)
+
+        if gray_mask_pil.mode != 'RGB':
+            gray_mask_pil = gray_mask_pil.convert('RGB')
+
+        input_tensor = preprocess(gray_mask_pil)
+        input_batch = input_tensor.unsqueeze(0).to(AppConstants.DEVICE)
+
+        with torch.no_grad():
+            output = model(input_batch)
+
+        probabilities = torch.nn.functional.softmax(output[0], dim=0).cpu().numpy()
+        predicted_class_idx = np.argmax(probabilities)
+        predicted_prob = probabilities[predicted_class_idx]
+
+        id2label = {
+            0: "CV2",
+            1: "CV3",
+            2: "CV4",
+            3: "CV5",
+            4: "CV6"
+        }
+
+        class_name = id2label.get(predicted_class_idx, f"Class {predicted_class_idx}")
+        return class_name, predicted_prob, probabilities
+    except Exception as e:
+        st.error(f"Classification failed: {str(e)}")
+        return None, None, None
 
 @st.cache_resource
 def load_segmentation_model():
@@ -175,7 +228,8 @@ def segmentation_page():
 
         try:
             uploaded_image_np = np.array(st.session_state.uploaded_image.convert("RGB"))
-            matched_stage = check_image_stage_from_array(uploaded_image_np, base_dir="original_images")
+            model = load_classification_model
+            matched_stage = check_image_stage_from_array(uploaded_image_np, model, base_dir="original_images")
 
             if matched_stage == "new data":
                 st.info("❗ This image is not found in existing CVMI folders (cvmi2–cvmi6).")
